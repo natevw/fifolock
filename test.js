@@ -59,13 +59,23 @@ setTimeout(function () {
 }, 0);
 
 
-
+var inCustomWrapper;
 CUSTOM_WRAPPER = q.TRANSACTION_WRAPPER.bind({
-    postAcquire: function (proceed) { proceed(); },
-    preRelease: function (finish) { finish(); }
+    postAcquire: function (proceed) {
+        if (inCustomWrapper) throw Error("preRelease wasn't called!");
+        else inCustomWrapper = true;
+        proceed();
+    },
+    preRelease: function (finish) {
+        if (inCustomWrapper !== 'main') throw Error("Main routine wasn't called!");
+        else inCustomWrapper = false;
+        finish();
+    }
 });
 
 function customWrapped(cb) { cb = CUSTOM_WRAPPER(cb, function () {
+    if (!inCustomWrapper) throw Error("postAcquire wasn't called!");
+    else inCustomWrapper = 'main';
     sampleLogic(function () {
         cb.call({custom:true}, "1", "2", "3");
     });
