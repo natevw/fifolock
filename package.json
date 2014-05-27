@@ -1,6 +1,6 @@
 {
   "name": "fifolock",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Not-quite-barebones serial queue / lock.",
   "main": "index.js",
   "scripts": {
