@@ -1,4 +1,4 @@
-// quick-and-dirty simple FIFO serial queue, helps you call `fn`s in order
+// very simple FIFO serial queue (plus callback wrapper), helps you call `fn`s in order
 
 module.exports = function SerialQueue() {
     var q = {},
