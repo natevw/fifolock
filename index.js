@@ -18,23 +18,23 @@ module.exports = function SerialQueue() {
     
     // usage: `cb = q.TRANSACTION_WRAPPER(cb, function () { … cb(); });`
     // (pass `true` for `nested` if your own caller already holds lock)
-    q.TRANSACTION_WRAPPER = function (cb, fn, nested) {
-        if (nested) {
-            process.nextTick(fn);
-            return cb;
-        }
+    q.TRANSACTION_WRAPPER = function (cb, proceed, nested) {
+        if (nested) return process.nextTick(proceed), cb;
         
         var _releaseQueue;
-        if (this !== q) fn = this.postAcquire.bind(q, fn);
+        if (this !== q) proceed = this.postAcquire.bind(q, proceed);
         q.acquire(function (releaseQueue) {
             _releaseQueue = releaseQueue;
-            fn();
+            proceed();
         });
-        function _cb() {
+        var finish = (this !== q) ? this.preRelease.bind(q, _finish) : _finish;
+        function _finish(applyCB) {
             _releaseQueue();
-            cb.apply(this, arguments);
+            applyCB();
         }
-        return (this !== q) ? this.preRelease.bind(q, _cb) : _cb;
+        return function () {
+            _finish.call(q, Function.prototype.apply.bind(cb, this, arguments));
+        };
     };
     
     return q;
