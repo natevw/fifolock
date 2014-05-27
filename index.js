@@ -29,8 +29,8 @@ module.exports = function SerialQueue() {
         });
         var finish = (this !== q) ? this.preRelease.bind(q, _finish) : _finish;
         function _finish(applyCB) {
-            _releaseQueue();
             applyCB();
+            _releaseQueue();
         }
         return function () {
             _finish.call(q, Function.prototype.apply.bind(cb, this, arguments));
