@@ -12,11 +12,11 @@ function sampleLogic(finish) {
     if (sampleLogic.busy) throw Error("Sample logic re-entered!");
     else sampleLogic.busy = true;
     if (lastLog) console.error("FAILURE: final task called too soon!"), process.exit(1);
-    else console.log("Waiting a second…");
+    else console.log("Waiting a bit…");
     setTimeout(function () {
         sampleLogic.busy = false;
         finish();
-    }, 1e3);
+    }, 100);
 }
 
 q.acquire(sampleLogic);
