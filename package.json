@@ -1,0 +1,23 @@
+{
+  "name": "fifolock",
+  "version": "0.0.0",
+  "description": "Not-quite-barebones serial queue / lock.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/natevw/fifolock"
+  },
+  "keywords": [
+    "lock",
+    "queue"
+  ],
+  "author": "Nathan Vander Wilt",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/natevw/fifolock/issues"
+  },
+  "homepage": "https://github.com/natevw/fifolock"
+}
